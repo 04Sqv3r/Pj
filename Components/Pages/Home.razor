@@ -1,16 +1,162 @@
-﻿@page "/"
+@page "/"
 
-<PageTitle>Title</PageTitle>
+<PageTitle>Home</PageTitle>
 
-<h1>Silence</h1>
+<h1 class="main-title">Silence</h1>
 
-you're Welcome.
+<div class="intro-container">
+    <div class="intro-content">
+        <p>
+            This project was created by two dedicated interns who spent days learning, experimenting, and building.
+            Their goal was to create a simple, beautiful system to manage your projects effectively.
+        </p>
+    </div>
+    <div class="hover-message">
+        You're Welcome.
+    </div>
+</div>
 
 
-<Counter IncrementAmount="3" />
+<div class="button-section">
+    <div class="button-wrapper"
+         @onmouseover="@(() => SetDescription(planDesc))"
+         @onmouseout="@(() => SetDescription(string.Empty))"
+         @onclick="@(() => NavigationManager.NavigateTo("/projectView"))">
+        Subscription Plans
+    </div>
 
-<button @onclick="@(() => NavigationManager.NavigateTo("/create-project"))" class="btn btn-primary">
-    Go to Create Project
-</button>
+    <div class="button-wrapper"
+         @onmouseover="@(() => SetDescription(createDesc))"
+         @onmouseout="@(() => SetDescription(string.Empty))"
+         @onclick="@(() => NavigationManager.NavigateTo("/create-project"))">
+        Create Project
+    </div>
+
+    <div class="button-wrapper"
+         @onmouseover="@(() => SetDescription(listDesc))"
+         @onmouseout="@(() => SetDescription(string.Empty))"
+         @onclick="@(() => NavigationManager.NavigateTo("/projects"))">
+        Project List
+    </div>
+</div>
+
+<div class="description-container @(string.IsNullOrEmpty(currentDescription) ? "hidden" : "visible")">
+    @currentDescription
+</div>
+
+@code {
+    
+    private string currentDescription = "";
+
+    private readonly string planDesc = "These are subscription plans we offer for using our service.";
+    private readonly string createDesc = "Create your own project and manage it directly from the platform.";
+    private readonly string listDesc = "View the list of all your existing projects.";
+
+    private void SetDescription(string text)
+    {
+        currentDescription = text;
+    }
+}
+
 
 @inject NavigationManager NavigationManager
+
+<style>
+
+.main-title {
+    font-size: 3rem;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+
+.intro-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.4s ease;
+}
+
+.intro-content,
+.hover-message {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.hover-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0078D7;
+    pointer-events: none;
+}
+
+.intro-container:hover .intro-content {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.intro-container:hover .hover-message {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+
+.button-section {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.button-wrapper {
+    padding: 14px 24px;
+    font-size: 1rem;
+    background-color: #0078D7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    user-select: none;
+}
+
+.button-wrapper:hover {
+    background-color: #005a9e;
+    transform: translateY(-2px);
+}
+
+
+.description-container {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #333;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    min-height: 24px;
+}
+
+.description-container.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.description-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>
