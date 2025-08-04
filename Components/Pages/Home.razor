@@ -1,0 +1,16 @@
+﻿@page "/"
+
+<PageTitle>Title</PageTitle>
+
+<h1>Silence</h1>
+
+you're Welcome.
+
+
+<Counter IncrementAmount="3" />
+
+<button @onclick="@(() => NavigationManager.NavigateTo("/create-project"))" class="btn btn-primary">
+    Go to Create Project
+</button>
+
+@inject NavigationManager NavigationManager

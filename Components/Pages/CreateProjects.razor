@@ -1,0 +1,55 @@
+@page "/create-project"
+@using BlazorApp1.Services
+@inject NavigationManager NavigationManager
+@inject ProjectService ProjectService
+
+<PageTitle>Create Project</PageTitle>
+
+<h1>Create a New Project</h1>
+
+<div>
+    <label>Project Name:</label>
+    <input @bind="projectName" class="form-control" />
+</div>
+<div>
+    <label>Description:</label>
+    <textarea @bind="projectDescription" class="form-control"></textarea>
+</div>
+<button class="btn btn-success" @onclick="CreateProject">Create</button>
+
+@if (message != null)
+{
+    <div class="alert @alertClass">@message</div>
+}
+
+@code {
+    private string projectName = "";
+    private string projectDescription = "";
+    private string message = "";
+    private string alertClass = "";
+
+    private async Task CreateProject()
+{
+    if (string.IsNullOrWhiteSpace(projectName))
+    {
+        message = "Project name cannot be empty.";
+        alertClass = "alert-danger";
+        return;
+    }
+
+    ProjectService.AddProject(new Project
+    {
+        Name = projectName,
+        Description = projectDescription
+    });
+
+    message = $"Project '{projectName}' created successfully!";
+    alertClass = "alert-success";
+    projectName = string.Empty;
+    projectDescription = string.Empty;
+
+    StateHasChanged(); // Обновить UI до задержки
+    await Task.Delay(3000); // 3 секунды на чтение уведомления
+    NavigationManager.NavigateTo("/projects");
+}
+}
