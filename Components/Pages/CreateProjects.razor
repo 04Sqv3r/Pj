@@ -3,15 +3,15 @@
 @inject NavigationManager NavigationManager
 @inject ProjectService ProjectService
 
-<PageTitle>Create Project</PageTitle>
+<PageTitle>Main Projects</PageTitle>
 
-<h1>Create a New Project</h1>
+<h1>Create New Project</h1>
 
-<div>
-    <label>Project Name:</label>
+<div class="mb-3">
+    <label>Name Project:</label>
     <input @bind="projectName" class="form-control" />
 </div>
-<div>
+<div class="mb-3">
     <label>Description:</label>
     <textarea @bind="projectDescription" class="form-control"></textarea>
 </div>
@@ -19,7 +19,7 @@
 
 @if (message != null)
 {
-    <div class="alert @alertClass">@message</div>
+    <div class="alert @alertClass mt-3">@message</div>
 }
 
 @code {
@@ -29,27 +29,26 @@
     private string alertClass = "";
 
     private async Task CreateProject()
-{
-    if (string.IsNullOrWhiteSpace(projectName))
     {
-        message = "Project name cannot be empty.";
-        alertClass = "alert-danger";
-        return;
+        if (string.IsNullOrWhiteSpace(projectName))
+        {
+            message = "Name project can't be empty!";
+            alertClass = "alert-danger";
+            return;
+        }
+
+        ProjectService.AddProject(new Project
+        {
+            Name = projectName,
+            Description = projectDescription,
+            CreatedAt = DateTime.Now
+        });
+
+        message = $"Project «{projectName}» succesful created!";
+        alertClass = "alert-success";
+        projectName = string.Empty;
+        projectDescription = string.Empty;
+
+        NavigationManager.NavigateTo("/projects");
     }
-
-    ProjectService.AddProject(new Project
-    {
-        Name = projectName,
-        Description = projectDescription
-    });
-
-    message = $"Project '{projectName}' created successfully!";
-    alertClass = "alert-success";
-    projectName = string.Empty;
-    projectDescription = string.Empty;
-
-    StateHasChanged(); // Обновить UI до задержки
-    await Task.Delay(3000); // 3 секунды на чтение уведомления
-    NavigationManager.NavigateTo("/projects");
-}
 }
