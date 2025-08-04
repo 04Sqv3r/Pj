@@ -1,23 +1,31 @@
-﻿@page "/projects"
+@page "/projects"
 @using BlazorApp1.Services
 @inject ProjectService ProjectService
 
-<h3>Projects</h3>
+<h3>Project List</h3>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var project in ProjectService.Projects)
-        {
-            <tr>
-                <td>@project.Name</td>
-                <td>@project.Description</td>
-            </tr>
-        }
-    </tbody>
-</table>
+@foreach (var project in ProjectService.Projects)
+{
+    <div class="project-card">
+        <strong>Project Name:</strong> @project.Name<br />
+        <strong>Description:</strong> @project.Description<br />
+        <strong>Created On:</strong> @project.CreatedAt.ToString("MMMM dd, yyyy")<br />
+        <strong>Status:</strong> Demo
+    </div>
+}
+
+<style>
+.project-card {
+    border: 1px solid gray;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.project-card:hover {
+    background-color: #f0f8ff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+</style>
