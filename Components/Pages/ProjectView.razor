@@ -1,0 +1,42 @@
+﻿@page "/projectView"
+
+<h2>Project</h2>
+
+@foreach (var projectView in projects)
+{
+    <div style="border: 1px solid gray; padding: 10px; margin: 10px 0;">
+        <h3>@projectView.Name</h3>
+        <p>@projectView.Description</p>
+        <p><small>Created: @projectView.CreatedDate.ToShortDateString()</small></p>
+    </div>
+}
+
+@code {
+    public class Project
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+
+    private List<Project> projects = new()
+    {
+        new Project
+        {
+            Id = 1,
+            Name = "Project Alpha",
+            Description = "Description Project Alpha",
+            CreatedDate = DateTime.Now.AddDays(-10),
+            
+        },
+        new Project
+        {
+            Id = 2,
+            Name = "Project Beta",
+            Description = "Description Project Beta",
+            CreatedDate = DateTime.Now.AddDays(-3),
+            
+        }
+    };
+}
